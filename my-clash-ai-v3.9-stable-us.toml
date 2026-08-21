@@ -1,0 +1,114 @@
+version = 1
+
+[custom]
+# 直接使用 ACL4SSR 官方 Clash 基础模板，不再使用自定义 base
+clash_rule_base = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/GeneralClashConfig.yml"
+enable_rule_generator = true
+overwrite_original_rules = true
+
+# 节点选择
+[[custom_groups]]
+name = "🚀 节点选择"
+type = "select"
+rule = ["[]♻️ 自动选择", ".*"]
+
+# 自动选择：兼顾低延迟与稳定性
+[[custom_groups]]
+name = "♻️ 自动选择"
+type = "url-test"
+rule = [".*"]
+url = "http://www.gstatic.com/generate_204"
+interval = 600
+tolerance = 100
+lazy = true
+
+# AI 服务：默认优先美国节点
+[[custom_groups]]
+name = "🤖 AI服务"
+type = "select"
+rule = ["(?i)(美国|US|USA|United States|洛杉矶|西雅图|圣何塞)", "[]🚀 节点选择", "[]♻️ 自动选择", ".*"]
+
+# 奈飞服务
+[[custom_groups]]
+name = "🎬 奈飞服务"
+type = "select"
+rule = ["[]🚀 节点选择", "[]♻️ 自动选择", ".*"]
+
+# 电报服务
+[[custom_groups]]
+name = "✈️ 电报服务"
+type = "select"
+rule = ["[]🚀 节点选择", "[]♻️ 自动选择", ".*"]
+
+# YouTube
+[[custom_groups]]
+name = "📺 YouTube"
+type = "select"
+rule = ["[]🚀 节点选择", "[]♻️ 自动选择", ".*"]
+
+# GitHub
+[[custom_groups]]
+name = "💻 GitHub"
+type = "select"
+rule = ["[]🚀 节点选择", "[]♻️ 自动选择", ".*"]
+
+# 漏网之鱼
+[[custom_groups]]
+name = "🐟 漏网之鱼"
+type = "select"
+rule = ["[]🚀 节点选择", "[]♻️ 自动选择", "[]DIRECT"]
+
+# AI
+[[rulesets]]
+group = "🤖 AI服务"
+ruleset = "clash-classic:https://cdn.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/all.yaml"
+interval = 86400
+
+# Netflix
+[[rulesets]]
+group = "🎬 奈飞服务"
+ruleset = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Netflix/Netflix.list"
+interval = 86400
+
+# Telegram
+[[rulesets]]
+group = "✈️ 电报服务"
+ruleset = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.list"
+interval = 86400
+
+# YouTube
+[[rulesets]]
+group = "📺 YouTube"
+ruleset = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.list"
+interval = 86400
+
+# GitHub
+[[rulesets]]
+group = "💻 GitHub"
+ruleset = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.list"
+interval = 86400
+
+# 国内/局域网直连
+[[rulesets]]
+group = "DIRECT"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"
+interval = 86400
+
+[[rulesets]]
+group = "DIRECT"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+interval = 86400
+
+[[rulesets]]
+group = "DIRECT"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
+interval = 86400
+
+[[rulesets]]
+group = "DIRECT"
+ruleset = "[]GEOIP,CN"
+
+# 最终流量
+[[rulesets]]
+group = "🐟 漏网之鱼"
+ruleset = "[]FINAL"
