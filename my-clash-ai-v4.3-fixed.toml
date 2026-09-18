@@ -1,0 +1,262 @@
+version = 1
+
+[custom]
+# 规则生成
+enable_rule_generator = true
+overwrite_original_rules = true
+skip_failed_links = true
+
+# 使用 subconverter 自带 Clash 基础模板，避免额外依赖 base YAML
+clash_rule_base = "base/all_base.tpl"
+
+# 节点名称处理
+add_emoji = false
+remove_old_emoji = false
+exclude_remarks = ["(到期|剩余流量|流量|官网|网址|套餐|Expire|Traffic|Remaining|更新订阅)"]
+
+# =========================
+# 策略组
+# =========================
+
+[[custom_groups]]
+name = "🚀 节点选择"
+type = "select"
+rule = [
+  "[]♻️ 自动选择",
+  "[]🔯 故障转移",
+  "[]🇭🇰 香港节点",
+  "[]🇸🇬 新加坡节点",
+  "[]🇯🇵 日本节点",
+  "[]🇺🇸 美国节点",
+  "[]🚀 手动切换",
+  "[]DIRECT"
+]
+
+[[custom_groups]]
+name = "🚀 手动切换"
+type = "select"
+rule = [".*"]
+
+[[custom_groups]]
+name = "♻️ 自动选择"
+type = "url-test"
+rule = [".*"]
+url = "https://cp.cloudflare.com/generate_204"
+interval = 300
+timeout = 5
+tolerance = 80
+lazy = true
+
+[[custom_groups]]
+name = "🔯 故障转移"
+type = "fallback"
+rule = [".*"]
+url = "https://cp.cloudflare.com/generate_204"
+interval = 300
+timeout = 5
+
+[[custom_groups]]
+name = "🇭🇰 香港节点"
+type = "url-test"
+rule = ["(?i)(香港|HK|Hong Kong|HongKong|🇭🇰)"]
+url = "https://cp.cloudflare.com/generate_204"
+interval = 300
+timeout = 5
+tolerance = 80
+lazy = true
+
+[[custom_groups]]
+name = "🇸🇬 新加坡节点"
+type = "url-test"
+rule = ["(?i)(新加坡|狮城|Singapore|SG|🇸🇬)"]
+url = "https://cp.cloudflare.com/generate_204"
+interval = 300
+timeout = 5
+tolerance = 80
+lazy = true
+
+[[custom_groups]]
+name = "🇯🇵 日本节点"
+type = "url-test"
+rule = ["(?i)(日本|东京|大阪|Japan|JP|🇯🇵)"]
+url = "https://cp.cloudflare.com/generate_204"
+interval = 300
+timeout = 5
+tolerance = 80
+lazy = true
+
+[[custom_groups]]
+name = "🇺🇸 美国节点"
+type = "url-test"
+rule = ["(?i)(美国|美國|United States|USA|US|洛杉矶|圣何塞|西雅图|🇺🇸)"]
+url = "https://cp.cloudflare.com/generate_204"
+interval = 300
+timeout = 5
+tolerance = 100
+lazy = true
+
+[[custom_groups]]
+name = "🤖 AI"
+type = "select"
+rule = [
+  "[]🇺🇸 美国节点",
+  "[]🇸🇬 新加坡节点",
+  "[]🇯🇵 日本节点",
+  "[]♻️ 自动选择",
+  "[]🚀 手动切换"
+]
+
+[[custom_groups]]
+name = "📲 Telegram"
+type = "select"
+rule = [
+  "[]🇸🇬 新加坡节点",
+  "[]🇭🇰 香港节点",
+  "[]🚀 节点选择",
+  "[]♻️ 自动选择",
+  "[]🚀 手动切换"
+]
+
+[[custom_groups]]
+name = "📹 YouTube"
+type = "select"
+rule = [
+  "[]🚀 节点选择",
+  "[]♻️ 自动选择",
+  "[]🇸🇬 新加坡节点",
+  "[]🇯🇵 日本节点",
+  "[]🇺🇸 美国节点",
+  "[]🚀 手动切换"
+]
+
+[[custom_groups]]
+name = "🎥 Netflix"
+type = "select"
+rule = [
+  "[]🚀 节点选择",
+  "[]🇸🇬 新加坡节点",
+  "[]🇯🇵 日本节点",
+  "[]🇺🇸 美国节点",
+  "[]🚀 手动切换"
+]
+
+[[custom_groups]]
+name = "🍎 Apple"
+type = "select"
+rule = ["[]DIRECT", "[]🚀 节点选择"]
+
+[[custom_groups]]
+name = "Ⓜ️ Microsoft"
+type = "select"
+rule = ["[]DIRECT", "[]🚀 节点选择"]
+
+[[custom_groups]]
+name = "🛑 广告拦截"
+type = "select"
+rule = ["[]REJECT", "[]DIRECT"]
+
+[[custom_groups]]
+name = "🎯 全球直连"
+type = "select"
+rule = ["[]DIRECT", "[]🚀 节点选择"]
+
+[[custom_groups]]
+name = "🐟 漏网之鱼"
+type = "select"
+rule = ["[]🚀 节点选择", "[]DIRECT"]
+
+# =========================
+# 规则
+# =========================
+
+[[rulesets]]
+group = "🎯 全球直连"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🛑 广告拦截"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🤖 AI"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/AI.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🤖 AI"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/OpenAi.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "📲 Telegram"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "📹 YouTube"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTube.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🎥 Netflix"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Netflix.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🍎 Apple"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "Ⓜ️ Microsoft"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Microsoft.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🎯 全球直连"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/GoogleCN.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🎯 全球直连"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🎯 全球直连"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🎯 全球直连"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🚀 节点选择"
+ruleset = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyLite.list"
+type = "surge-ruleset"
+interval = 86400
+
+[[rulesets]]
+group = "🎯 全球直连"
+ruleset = "[]GEOIP,CN"
+
+[[rulesets]]
+group = "🐟 漏网之鱼"
+ruleset = "[]MATCH"
